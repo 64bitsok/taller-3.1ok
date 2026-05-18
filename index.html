@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Álgebra Relacional vs Entity Framework - Grupo 64 bits</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #38bdf8;
+            --secondary: #a855f7;
+            --accent: #34d399;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Encabezado Institucional */
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        header h2 {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .meta-item span {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Sección de la Brecha de Impedancia */
+        .intro-bridge {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .intro-bridge { grid-template-columns: 1fr; }
+        }
+
+        .bridge-title {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .paradigm-box {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .paradigm-box.oo {
+            border-left-color: var(--secondary);
+        }
+
+        .paradigm-box h3 {
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        /* Grid de Operaciones */
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 0.5rem auto 0 auto;
+            border-radius: 2px;
+        }
+
+        .grid-operaciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .card.binaria::before {
+            background: var(--secondary);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .op-name {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .op-symbol {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            background: rgba(52, 211, 153, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+        }
+
+        .card.binaria .op-symbol {
+            color: var(--secondary);
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .card-body p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .equivalence-box {
+            background: #0f172a;
+            border-radius: 6px;
+            padding: 0.8rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            border: 1px solid #1e293b;
+        }
+
+        .eq-item {
+            margin-bottom: 0.4rem;
+        }
+        .eq-item:last-child { margin-bottom: 0; }
+
+        .eq-label {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .eq-value {
+            color: #fff;
+        }
+
+        /* Footer / Conclusiones resumidas */
+        footer {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        footer h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 1.5rem auto;
+            font-size: 0.95rem;
+        }
+
+        .footer-brand {
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Universidad Andina del Cusco</h1>
+            <h2>Facultad de Ingeniería y Arquitectura • Escuela Profesional de Ingeniería de Sistemas</h2>
+            <div class="meta-info">
+                <div class="meta-item">Asignatura: <span>Modelado de Base de Datos</span></div>
+                <div class="meta-item">Docente: <span>Mgt. Hugo Espetia Huamanga</span></div>
+                <div class="meta-item">Grupo: <span>64 bits</span></div>
+                <div class="meta-item">Año: <span>2026</span></div>
+            </div>
+        </header>
+
+        <div class="intro-bridge">
+            <div class="bridge-title">La Brecha de Impedancia Objeto-Relacional</div>
+            <div class="paradigm-box">
+                <h3>Modelo Relacional (Base de Datos)</h3>
+                <p>Basado en la teoría matemática de conjuntos puros. Almacena la información de forma granular mediante filas, columnas, restricciones de llaves e integridad relacional.</p>
+            </div>
+            <div class="paradigm-box oo">
+                <h3>Paradigma Orientado a Objetos (C# / .NET)</h3>
+                <p>Gestiona el estado en la memoria dinámica de la aplicación utilizando clases, encapsulamiento, herencia, propiedades fuertemente tipadas y referencias lógicas.</p>
+            </div>
+        </div>
+
+        <div class="section-title">Operaciones Unarias (Sobre 1 Relación)</div>
+        
+        <div class="grid-operaciones">
+            <div class="card">
+                <div class="card-header">
+                    <span class="op-name">Selección</span>
+                    <span class="op-symbol">σ</span>
+                </div>
+                <div class="card-body">
+                    <p>Filtra de manera horizontal un conjunto de filas (tuplas) que cumplen rigurosamente con una condición condicional lógica o predicado.</p>
+                    <div class="equivalence-box">
+                        <div class="eq-item"><span class="eq-label">LINQ:</span> <span class="eq-value">.Where(predicado)</span></div>
+                        <div class="eq-item"><span class="eq-label">SQL:</span> <span class="eq-value">WHERE</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="op-name">Proyección</span>
+                    <span class="op-symbol">π</span>
+                </div>
+                <div class="card-body">
+                    <p>Discrimina verticalmente columnas específicas de una entidad de entrada y colapsa los duplicados automáticos para preservar la teoría pura de conjuntos.</p>
+                    <div class="equivalence-box">
+                        <div class="eq-item"><span class="eq-label">LINQ:</span> <span class="eq-value">.Select().Distinct()</span></div>
+                        <div class="eq-item"><span class="eq-label">SQL:</span> <span class="eq-value">SELECT DISTINCT</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="op-name">Renombramiento</span>
+                    <span class="op-symbol">ρ</span>
+                </div>
+                <div class="card-body">
+                    <p>Modifica los metadatos de los identificadores o atributos del resultado. Es clave para prevenir colisiones de nombres o ambigüedades lógicas.</p>
+                    <div class="equivalence-box">
+                        <div class="eq-item"><span class="eq-label">LINQ:</span> <span class="eq-value">new { Alias = Propiedad }</span></div>
+                        <div class="eq-item"><span class="eq-label">SQL:</span> <span class="eq-value">AS</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Operaciones Binarias (Requieren Compatibilidad)</div>
+
+        <div class="grid-operaciones">
+            <div class="card binaria">
+                <div class="card-header">
+                    <span class="op-name">Unión</span>
+                    <span class="op-symbol">∪</span>
+                </div>
+                <div class="card-body">
+                    <p>Fusiona los registros de dos relaciones estructuralmente compatibles en un único set unificado, eliminando los elementos idénticos redundantes.</p>
+                    <div class="equivalence-box">
+                        <div class="eq-item"><span class="eq-label">LINQ:</span> <span class="eq-value">.Union()</span></div>
+                        <div class="eq-item"><span class="eq-label">SQL:</span> <span class="eq-value">UNION</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card binaria">
+                <div class="card-header">
+                    <span class="op-name">Diferencia</span>
+                    <span class="op-symbol">-</span>
+                </div>
+                <div class="card-body">
+                    <p>Operación no conmutativa que extrae exclusivamente los elementos que habitan en la primera relación pero no figuran en la segunda.</p>
+                    <div class="equivalence-box">
+                        <div class="eq-item"><span class="eq-label">LINQ:</span> <span class="eq-value">.Except()</span></div>
+                        <div class="eq-item"><span class="eq-label">SQL:</span> <span class="eq-value">EXCEPT / NOT IN</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card binaria">
+                <div class="card-header">
+                    <span class="op-name">Producto Cartesiano</span>
+                    <span class="op-symbol">×</span>
+                </div>
+                <div class="card-body">
+                    <p>Cruza de manera masiva todas las filas de la relación 'A' con todas las filas de la relación 'B'. No requiere compatibilidad previa de unión.</p>
+                    <div class="equivalence-box">
+                        <div class="eq-item"><span class="eq-label">LINQ:</span> <span class="eq-value">.SelectMany()</span></div>
+                        <div class="eq-item"><span class="eq-label">SQL:</span> <span class="eq-value">CROSS JOIN</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <h3>Conclusión del Núcleo de Abstracción</h3>
+            <p>Entity Framework Core y LINQ actúan como un puente lógico perfecto. Traducen las peticiones nativas orientadas a objetos en árboles de expresiones algebraicas cerradas y deterministas que el RDBMS ejecuta con total integridad de datos.</p>
+            <div class="footer-brand">DESARROLLADO POR EL GRUPO "64 BITS" • UAC 2026</div>
+        </footer>
+    </div>
+
+</body>
+</html>
