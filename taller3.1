@@ -1,0 +1,338 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp1
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void seleccion_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                var resultado = db.titles
+                                  .Where(t => t.price > 20)
+                                  .ToList();
+                dgvDatos.DataSource = resultado;
+            }
+        }
+        private void dgvDatos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var ciudadesAutores = db.authors.Select(a => new { Ciudad = a.city });
+                var ciudadesTiendas = db.stores.Select(s => new { Ciudad = s.city });
+
+                
+                var resultado = ciudadesAutores.Union(ciudadesTiendas).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                // En lugar de traer toda la entidad 'sales', 
+                // proyectamos a un objeto anónimo con datos simples.
+                var resultado = db.sales
+                                  .Where(s => s.qty >= 20 && s.qty <= 50)
+                                  .Select(s => new
+                                  {
+                                      TiendaID = s.stor_id,
+                                      OrdenNum = s.ord_num,
+                                      Cantidad = s.qty,
+                                      LibroID = s.title_id
+                                  })
+                                  .ToList();
+
+                dgvDatos.DataSource = resultado;
+
+            }
+         }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                string[] estados = { "CA", "UT" };
+
+                var resultado = db.authors
+                                  .Where(a => estados.Contains(a.state))
+                                  .ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var resultado = db.authors
+                                  .Select(a => new { Ciudad = a.city })
+                                  .Distinct()
+                                  .ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var resultado = db.stores
+                                  .Select(s => new {
+                                      ID = s.stor_id,
+                                      Nombre = s.stor_name,
+                                      Telefono = s.stor_address
+                                  })
+                                  .ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var resultado = db.sales
+                                  .Select(s => new { CodigoLibroVendido = s.title_id })
+                                  .Distinct()
+                                  .ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                var resultado = db.titles
+                                  .Select(t => new {
+                                      Codigo_Interno = t.title_id,
+                                      Nombre_Del_Libro = t.title1
+                                  })
+                                  .ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                var resultado = db.employees
+                                  .Select(emp => new {
+                                      Nombre = emp.fname,
+                                      Apellido = emp.lname,
+                                      Fecha_Ingreso = emp.hire_date
+                                  })
+                                  .ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                var resultado = db.publishers
+                                  .Select(p => new {
+                                      Nombre_Editorial = p.pub_name,
+                                      Pais_Origen = p.country
+                                  })
+                                  .ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var estadosPub = db.publishers
+                                   .Where(p => p.state != null)
+                                   .Select(p => new { Estado = p.state });
+
+                var estadosStore = db.stores
+                                     .Where(s => s.state != null)
+                                     .Select(s => new { Estado = s.state });
+
+                var resultado = estadosPub.Union(estadosStore).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var zipAutores = db.authors
+                                   .AsEnumerable()
+                                   .Select(a => new { Codigo = a.zip });
+
+                var idEmpleados = db.employees
+                                    .AsEnumerable()
+                                    .Select(emp => new { Codigo = emp.job_id.ToString() });
+
+                
+                var resultado = zipAutores.Union(idEmpleados).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var ciudadesA = db.authors.Select(a => new { Ciudad = a.city });
+
+               
+                var ciudadesT = db.stores.Select(s => new { Ciudad = s.city });
+
+                
+                var resultado = ciudadesA.Except(ciudadesT).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                var estadosTiendas = db.stores
+                                       .Where(s => s.state != null)
+                                       .Select(s => new { Estado = s.state });
+
+                var estadosEditoriales = db.publishers
+                                           .Where(p => p.state != null)
+                                           .Select(p => new { Estado = p.state });
+
+                var resultado = estadosTiendas.Except(estadosEditoriales).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var todosLosLibros = db.titles.Select(t => new { ID = t.title_id });
+
+                
+                var librosVendidos = db.sales.Select(s => new { ID = s.title_id });
+
+                
+                var resultado = todosLosLibros.Except(librosVendidos).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var resultado = (from s in db.stores
+                                 from p in db.publishers
+                                 select new
+                                 {
+                                     Tienda = s.stor_name,
+                                     Editorial = p.pub_name,
+                                     Ciudad_Tienda = s.city,
+                                     Ciudad_Editorial = p.city
+                                 }).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                var resultado = (from emp in db.employees
+                                 from j in db.jobs
+                                 select new
+                                 {
+                                     Empleado = emp.fname + " " + emp.lname,
+                                     Puesto_Posible = j.job_desc
+                                 }).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            using (pubsEntities db = new pubsEntities())
+            {
+                
+                var tiposUnicos = db.titles.Select(t => t.type).Distinct();
+
+                var resultado = (from aut in db.authors
+                                 from tipo in tiposUnicos
+                                 select new
+                                 {
+                                     Autor = aut.au_fname + " " + aut.au_lname,
+                                     Genero_Libro = tipo
+                                 }).ToList();
+
+                dgvDatos.DataSource = resultado;
+            }
+        }
+    }
+}
